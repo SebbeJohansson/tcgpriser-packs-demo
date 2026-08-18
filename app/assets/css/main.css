@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Space Grotesk", -apple-system, "Segoe UI", sans-serif;
+  --font-sans: -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* Warm charcoal ground, not a default zinc/slate. */
+  --color-ink-950: #0e0c10;
+  --color-ink-900: #17141a;
+  --color-ink-800: #211d25;
+  --color-ink-700: #2c2731;
+  --color-ink-600: #3b3541;
+  --color-ink-500: #565060;
+  --color-paper-300: #79737f;
+  --color-paper-100: #c7c1c9;
+  --color-paper-50: #f2ede4;
+
+  /* Foil gold: the brand accent, literal to "opening a pack". */
+  --color-foil-600: #a97a1f;
+  --color-foil-500: #cf9a35;
+  --color-foil-400: #e0b657;
+  --color-foil-300: #edcd82;
+
+  /* Rarity ladder, deliberately kept out of the violet/indigo band. */
+  --color-rarity-common: #8b93a1;
+  --color-rarity-uncommon: #3fb87f;
+  --color-rarity-rare: #45b6e0;
+  --color-rarity-double-rare: #4d7fe0;
+  --color-rarity-illustration: #ec7fa0;
+  --color-rarity-ultra: #e0a83f;
+  --color-rarity-special-illustration: #e0703f;
+  --color-rarity-hyper: #e0b657;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-ink-950);
+    color: var(--color-paper-50);
+    font-family: var(--font-sans);
+  }
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}

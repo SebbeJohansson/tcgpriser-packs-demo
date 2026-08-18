@@ -7,13 +7,19 @@ const expansionsForLanguage = computed(() => {
 });
 </script>
 
-
 <template>
-    <div v-for="expansion in expansionsForLanguage" :key="expansion.expansion.technicalName">
-        <NuxtLink :to="`/expansion/${expansion.expansion.technicalName}`">
-            <img :src="expansion.expansion.logoUrl" :alt="expansion.expansion.name" />
-            <h5>Pack Rates</h5>
-            <span v-if="!expansion.packRates">Warning: this expansion do not have proper community collected pack rates.</span>
-        </NuxtLink>
+  <div class="flex flex-col gap-8">
+    <div class="flex items-center justify-between">
+      <h1 class="font-display text-2xl font-semibold text-paper-50 uppercase tracking-wide">{{ lang }} expansions</h1>
+      <NuxtLink to="/" class="text-xs font-mono uppercase tracking-wide text-paper-300 hover:text-foil-400 transition-colors">
+        &larr; Back
+      </NuxtLink>
     </div>
+
+    <p v-if="expansionsForLanguage.length === 0" class="text-paper-300">No expansions found for this language.</p>
+
+    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <ExpansionTile v-for="group in expansionsForLanguage" :key="group.expansion.technicalName" :group="group" />
+    </div>
+  </div>
 </template>
