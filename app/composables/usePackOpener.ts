@@ -19,6 +19,20 @@ export interface PackCard {
   reverseHolo: boolean;
 }
 
+/** Border/ring color for a card face: foil gradient for foil rarities, a flat tier color otherwise,
+ * and a plain neutral ring for the synthetic energy/code slots (which have no rarity). */
+export function packCardRingStyle(item: PackCard) {
+  if (!item.card) return { background: 'var(--color-ink-700)' };
+  const tier = getRarityTier(item.card.rarity);
+  if (tier.foil) {
+    return {
+      background:
+        'conic-gradient(from 180deg, var(--color-foil-300), var(--color-rarity-hyper), var(--color-foil-500), var(--color-rarity-illustration), var(--color-foil-300))',
+    };
+  }
+  return { background: tier.color };
+}
+
 function pickRandom<T>(items: T[]): T {
   return items[Math.floor(Math.random() * items.length)];
 }
