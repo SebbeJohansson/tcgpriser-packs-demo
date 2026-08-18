@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import type { PackCard } from '~/composables/usePackOpener';
 
-const props = defineProps<{ expansionSlug: string; expansionName: string }>();
+const props = defineProps<{ expansionSlug: string; expansionName: string; expansionLanguage?: string }>();
 
 const { canOpenPack, openPack } = usePackOpener();
 const available = computed(() => canOpenPack(props.expansionSlug));
+const cardBackUrl = computed(() =>
+  (props.expansionLanguage || '').toUpperCase() === 'JPN' ? '/card-backs/jpn.jpg' : '/card-backs/en.jpg'
+);
 
 const drawn = ref<PackCard[]>();
 const revealed = ref<boolean[]>([]);
@@ -68,7 +71,6 @@ function ringStyle(item: PackCard) {
         <span class="font-display text-3xl font-bold text-foil-400 tracking-widest">?</span>
         <span class="text-[11px] font-mono uppercase tracking-widest text-foil-300">Tap to open</span>
       </button>
-      <p class="mt-4 text-xs text-paper-300 font-mono">9 cards · 4 common · 3 uncommon · 1 reverse · 1 hit</p>
     </div>
 
     <div v-else class="grid grid-cols-3 sm:grid-cols-5 gap-3 sm:gap-4">
@@ -79,9 +81,9 @@ function ringStyle(item: PackCard) {
         >
           <!-- back -->
           <div
-            class="absolute inset-0 rounded-lg [backface-visibility:hidden] border border-ink-600 bg-ink-800 flex items-center justify-center"
+            class="absolute inset-0 rounded-lg [backface-visibility:hidden] border border-ink-600 bg-ink-800 overflow-hidden"
           >
-            <span class="font-display text-foil-400/70 text-xl">?</span>
+            <img :src="cardBackUrl" alt="" class="w-full h-full object-cover" loading="lazy" />
           </div>
           <!-- front -->
           <div class="absolute inset-0 rounded-lg [backface-visibility:hidden] [transform:rotateY(180deg)] p-[2px]" :style="ringStyle(item)">

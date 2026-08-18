@@ -31,7 +31,7 @@ const languages = computed(() => Object.keys(expansionsGroupedByLanguage.value).
     </main>
     <footer class="border-t border-ink-800 mt-20">
       <div class="mx-auto max-w-6xl px-4 sm:px-6 py-8 text-xs text-paper-300">
-        Odds are community-collected estimates, not official rates. Prices via tcgpriser.se.
+        Odds are community-collected estimates, not official rates. All information is collected from tcgpriser.se.
       </div>
     </footer>
   </div>
