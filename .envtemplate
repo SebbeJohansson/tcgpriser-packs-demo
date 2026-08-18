@@ -1,0 +1,6 @@
+# A service token from the API's API_AUTH_TOKENS. Sent as `Authorization: Bearer` on every
+# request to api.tcgpriser.se, identifying this app's server as internal infrastructure rather
+# than an anonymous/bot client.
+# Needed at build time as well as at runtime: prerendering happens during `yarn build`.
+# Optional for local dev — omitting it just makes anonymous requests.
+PRERENDER_API_AUTH_TOKEN=xxxxxxxx

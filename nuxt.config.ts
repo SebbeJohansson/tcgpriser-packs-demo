@@ -16,6 +16,14 @@ export default defineNuxtConfig({
       failOnError: false,
     },
   },
+  runtimeConfig: {
+    // A service token from the API's `API_AUTH_TOKENS`, sent as `Authorization: Bearer` on every
+    // request to api.tcgpriser.se. Identifies this app's server (build-time prerender and the
+    // deployed Netlify function) as internal infrastructure rather than anonymous/bot traffic.
+    // Needed at build time too, since prerendering happens during `yarn build`. Server-only: never
+    // move this under `public`, that would ship it to every visitor.
+    apiServiceToken: process.env.PRERENDER_API_AUTH_TOKEN,
+  },
   app: {
     head: {
       title: 'Packs',

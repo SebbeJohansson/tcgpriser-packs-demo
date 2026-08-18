@@ -16,6 +16,8 @@ Endpoints used:
 
 The response is cached for 30 minutes and reshaped into `CardGroup`s (`app/types/tcgpriser.ts`) that the rest of the app reads from `useTcgPriser()`.
 
+Set `PRERENDER_API_AUTH_TOKEN` (a service token from the API's `API_AUTH_TOKENS`) so these requests are sent as `Authorization: Bearer <token>` and identified as internal traffic rather than an anonymous/bot client — needed both for the Netlify build (prerendering runs during `yarn build`) and for the deployed function. Optional for local dev; omitting it just makes anonymous requests.
+
 ## Setup
 
 Make sure to install dependencies:
