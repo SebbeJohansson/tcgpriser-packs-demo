@@ -32,7 +32,7 @@ const oddsRows = computed(() => {
       </NuxtLink>
       <button
         type="button"
-        class="text-xs font-mono uppercase tracking-wide text-paper-300 hover:text-foil-400 transition-colors"
+        class="text-xs font-mono uppercase tracking-wide text-paper-300 hover:text-foil-400 transition-colors cursor-pointer"
         @click="showDetails = !showDetails"
       >
         {{ showDetails ? 'Hide details' : 'Show details' }}
@@ -41,7 +41,12 @@ const oddsRows = computed(() => {
 
     <h1 class="font-display text-2xl sm:text-3xl font-bold text-paper-50 text-center">{{ expansion.name }}</h1>
 
-    <PackOpener :expansion-slug="slug" :expansion-name="expansion.name" :expansion-language="expansion.language" />
+    <PackOpener
+      :expansion-slug="slug"
+      :expansion-name="expansion.name"
+      :expansion-language="expansion.language"
+      :pack-image-url="group?.packImageUrl"
+    />
 
     <div v-if="showDetails" class="flex flex-col gap-10">
       <header class="flex flex-col sm:flex-row sm:items-center gap-6">

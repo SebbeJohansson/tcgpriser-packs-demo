@@ -7,7 +7,7 @@ const languages = computed(() => Object.keys(expansionsGroupedByLanguage.value).
 </script>
 
 <template>
-  <div class="min-h-screen bg-ink-950 text-paper-50">
+  <div class="min-h-screen bg-ink-950 text-paper-50 flex flex-col">
     <header class="border-b border-ink-800 bg-ink-950/90 backdrop-blur sticky top-0 z-20">
       <div class="mx-auto max-w-6xl px-4 sm:px-6 py-4 flex items-center gap-6">
         <NuxtLink to="/" class="font-display text-xl font-semibold tracking-tight text-paper-50">
@@ -26,10 +26,10 @@ const languages = computed(() => Object.keys(expansionsGroupedByLanguage.value).
         </nav>
       </div>
     </header>
-    <main class="mx-auto max-w-6xl px-4 sm:px-6 py-10">
+    <main class="mx-auto max-w-6xl px-4 sm:px-6 py-10 flex-1 w-full">
       <NuxtPage />
     </main>
-    <footer class="border-t border-ink-800 mt-20">
+    <footer class="border-t border-ink-800">
       <div class="mx-auto max-w-6xl px-4 sm:px-6 py-8 text-xs text-paper-300">
         Odds are community-collected estimates, not official rates. All information is collected from tcgpriser.se.
       </div>

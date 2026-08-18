@@ -12,6 +12,10 @@ export default defineCachedEventHandler(async (): Promise<Record<string, CardGro
         tcgpriser.expansions.products(expansion.technicalName),
         tcgpriser.packRates.get(expansion.technicalName).catch(() => undefined),
       ]);
+      const boosterPack = expansionProducts.sealed.items.find(
+        (product) => product.category?.technicalName === 'booster-pack'
+      );
+
       const group: CardGroup = {
         expansion,
         cards: expansionProducts.cards.items.map((card) => {
@@ -19,6 +23,7 @@ export default defineCachedEventHandler(async (): Promise<Record<string, CardGro
           return card;
         }),
         packRates: expansionHitRates?.buckets || undefined,
+        packImageUrl: boosterPack?.imageUrl || undefined,
       };
       return [expansion.technicalName, group] as const;
     })

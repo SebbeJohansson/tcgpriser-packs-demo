@@ -4,4 +4,5 @@ export type CardGroup = {
   expansion: Expansion;
   cards: ExpansionCard[];
   packRates?: components["schemas"]["PackRateBucket"][]; // Optional property for pack rates
+  packImageUrl?: string;
 };

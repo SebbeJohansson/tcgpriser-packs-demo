@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import type { PackCard } from '~/composables/usePackOpener';
 
-const props = defineProps<{ expansionSlug: string; expansionName: string; expansionLanguage?: string }>();
+const props = defineProps<{
+  expansionSlug: string;
+  expansionName: string;
+  expansionLanguage?: string;
+  packImageUrl?: string;
+}>();
 
 const { canOpenPack, openPack } = usePackOpener();
 const available = computed(() => canOpenPack(props.expansionSlug));
@@ -45,13 +50,11 @@ function ringStyle(item: PackCard) {
 </script>
 
 <template>
-  <section class="rounded-2xl border border-ink-700 bg-ink-900/60 p-6 sm:p-8">
-    <div class="flex items-center justify-between gap-4 mb-6">
-      <h2 class="font-display text-lg font-semibold text-paper-50">Open a pack</h2>
+  <section>
+    <div v-if="drawn" class="flex items-center justify-end gap-4 mb-6">
       <button
-        v-if="drawn"
         type="button"
-        class="text-xs font-mono uppercase tracking-wide text-paper-300 hover:text-foil-400 transition-colors"
+        class="text-xs font-mono uppercase tracking-wide text-paper-300 hover:text-foil-400 transition-colors cursor-pointer"
         @click="reset"
       >
         Open another
@@ -65,11 +68,17 @@ function ringStyle(item: PackCard) {
     <div v-else-if="!drawn" class="flex flex-col items-center py-6">
       <button
         type="button"
-        class="pack-sheen relative w-40 aspect-5/7 rounded-2xl border-2 border-foil-500 bg-ink-800 flex flex-col items-center justify-center gap-2 overflow-hidden hover:scale-[1.03] active:scale-[0.98] transition-transform cursor-pointer"
+        class="pack-sheen relative h-[min(80vh,calc(100dvh-26rem))] max-h-144 aspect-5/7 rounded-2xl border-2 border-foil-500 bg-ink-800 bg-cover bg-center flex flex-col items-center justify-end overflow-hidden hover:scale-[1.03] active:scale-[0.98] transition-transform cursor-pointer"
+        :style="packImageUrl ? { backgroundImage: `url(${packImageUrl})` } : undefined"
         @click="open"
       >
-        <span class="font-display text-3xl font-bold text-foil-400 tracking-widest">?</span>
-        <span class="text-[11px] font-mono uppercase tracking-widest text-foil-300">Tap to open</span>
+        <span v-if="!packImageUrl" class="font-display text-3xl font-bold text-foil-400 tracking-widest m-auto">?</span>
+        <span
+          class="w-full text-[11px] font-mono uppercase tracking-widest text-foil-300 text-center py-1.5"
+          :class="packImageUrl ? 'bg-gradient-to-t from-ink-950/90 to-transparent pt-4' : ''"
+        >
+          Tap to open
+        </span>
       </button>
     </div>
 
