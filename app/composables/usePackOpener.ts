@@ -1,16 +1,14 @@
 import type { ExpansionCard } from '~/types/tcgpriser';
 
-// Mirrors the pris-tabell-api Scarlet & Violet slot structure (src/scripts/generate-pack.ts):
-// 4 Common, 3 Uncommon, 1 reverse-holo, 1 rare-or-better "hit" slot drawn from the expansion's
-// community-collected pull rates, plus a Basic Energy and a code card for English-language packs.
-const PACK_COMMON = 4;
-const PACK_UNCOMMON = 3;
-
 export type PackSlot = 'common' | 'uncommon' | 'reverse' | 'hit' | 'energy' | 'code';
 
-// Fallback top-to-bottom slot order for expansions with no known "card trick" order recorded yet:
-// the same common/uncommon/reverse/hit grouping the pack has always been drawn in.
-const DEFAULT_SLOT_ORDER: PackSlot[] = ['common', 'common', 'common', 'common', 'uncommon', 'uncommon', 'uncommon', 'reverse', 'hit'];
+// Fallback top-to-bottom slot order for expansions with no known "card trick" order recorded yet.
+// English mirrors the pris-tabell-api Scarlet & Violet slot structure (src/scripts/generate-pack.ts):
+// 4 Common, 3 Uncommon, 1 reverse-holo, 1 rare-or-better "hit" slot, plus a Basic Energy and a code
+// card. Japanese packs are a smaller, different physical product (no reverse-holo/energy/code slot):
+// 3 Common, 1 Uncommon, 1 "hit" slot — 5 cards total.
+const DEFAULT_SLOT_ORDER_ENG: PackSlot[] = ['common', 'common', 'common', 'common', 'uncommon', 'uncommon', 'uncommon', 'reverse', 'hit'];
+const DEFAULT_SLOT_ORDER_JPN: PackSlot[] = ['common', 'common', 'common', 'uncommon', 'hit'];
 
 export interface PackCard {
   // Absent for the synthetic 'energy'/'code' slots, which aren't drawn from the card pool.
@@ -81,29 +79,32 @@ export function usePackOpener() {
 
     if (commonPool.length === 0 || uncommonPool.length === 0 || hitPool.length === 0) return undefined;
 
-    // Draw each slot's cards up front, then place them by real physical position: the "card
-    // trick" order collectors use to sort an unopened pack, published per-expansion by the API
-    // (falls back to the historical common/uncommon/reverse/hit grouping when unknown).
-    const drawnBySlot: Record<PackSlot, PackCard[]> = {
-      common: Array.from({ length: PACK_COMMON }, () => ({ card: pickRandom(commonPool), slot: 'common', reverseHolo: false })),
-      uncommon: Array.from({ length: PACK_UNCOMMON }, () => ({ card: pickRandom(uncommonPool), slot: 'uncommon', reverseHolo: false })),
-      reverse: [{ card: pickRandom(reversePool), slot: 'reverse', reverseHolo: true }],
-      hit: [{ card: pickWeighted(hitPool, weightOf), slot: 'hit', reverseHolo: false }],
-      energy: [{ slot: 'energy', reverseHolo: false }],
-      code: [{ slot: 'code', reverseHolo: false }],
-    };
-
-    const baseOrder = group.packSlotOrder?.length ? group.packSlotOrder : DEFAULT_SLOT_ORDER;
+    const isEnglish = (group.expansion.language || '').toUpperCase() !== 'JPN';
+    const baseOrder = group.packSlotOrder?.length ? group.packSlotOrder : isEnglish ? DEFAULT_SLOT_ORDER_ENG : DEFAULT_SLOT_ORDER_JPN;
     // English packs include a Basic Energy and a code card; Japanese packs don't. A curated
     // slotOrder that already places them wins as-is; otherwise they default to the code card on
     // top (as inserted at the factory) and the energy card at the bottom.
-    const isEnglish = (group.expansion.language || '').toUpperCase() !== 'JPN';
     const hasEnergy = baseOrder.includes('energy');
     const hasCode = baseOrder.includes('code');
     const slotOrder =
       isEnglish && !(hasEnergy && hasCode)
         ? [...(hasCode ? [] : (['code'] as PackSlot[])), ...baseOrder, ...(hasEnergy ? [] : (['energy'] as PackSlot[]))]
         : baseOrder;
+
+    // Draw each slot's cards up front, then place them by real physical position: the "card
+    // trick" order collectors use to sort an unopened pack, published per-expansion by the API
+    // (falls back to the language-appropriate default grouping when unknown). Counts come from the
+    // resolved slot order itself rather than a hardcoded constant, so a Japanese pack's smaller
+    // common/uncommon composition is honored too.
+    const countOf = (slot: PackSlot) => slotOrder.filter((s) => s === slot).length;
+    const drawnBySlot: Record<PackSlot, PackCard[]> = {
+      common: Array.from({ length: countOf('common') }, () => ({ card: pickRandom(commonPool), slot: 'common', reverseHolo: false })),
+      uncommon: Array.from({ length: countOf('uncommon') }, () => ({ card: pickRandom(uncommonPool), slot: 'uncommon', reverseHolo: false })),
+      reverse: Array.from({ length: countOf('reverse') }, () => ({ card: pickRandom(reversePool), slot: 'reverse', reverseHolo: true })),
+      hit: [{ card: pickWeighted(hitPool, weightOf), slot: 'hit', reverseHolo: false }],
+      energy: [{ slot: 'energy', reverseHolo: false }],
+      code: [{ slot: 'code', reverseHolo: false }],
+    };
 
     return slotOrder.map((slot) => drawnBySlot[slot].shift()!);
   };
