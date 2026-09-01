@@ -59,11 +59,15 @@ const oddsRows = computed(() => {
             <span v-if="expansion.year">· {{ expansion.year }}</span>
             <span>· {{ expansion.cardCount }} cards</span>
             <span v-if="expansion.sealedCount">· {{ expansion.sealedCount }} sealed products</span>
+            <ApiEndpointTag class="ml-auto shrink-0" path="/expansions" />
           </div>
         </header>
 
         <section v-if="oddsRows.length" class="flex flex-col gap-3">
-          <h2 class="font-display text-lg font-semibold text-paper-50">Hit-slot odds</h2>
+          <div class="flex items-center justify-between gap-4">
+            <h2 class="font-display text-lg font-semibold text-paper-50">Hit-slot odds</h2>
+            <ApiEndpointTag class="shrink-0" :path="`/pack-rates/${slug}`" />
+          </div>
           <p class="text-xs text-paper-300 -mt-1">
             Every pack carries 4 common, 3 uncommon, and 1 reverse holo, plus one rare-or-better "hit" slot.
             These are the community-collected odds for that hit slot, normalised to 100%.
@@ -80,7 +84,10 @@ const oddsRows = computed(() => {
         </section>
 
         <section v-if="group?.cards.length" class="flex flex-col gap-4">
-          <h2 class="font-display text-lg font-semibold text-paper-50">All cards</h2>
+          <div class="flex items-center justify-between gap-4">
+            <h2 class="font-display text-lg font-semibold text-paper-50">All cards</h2>
+            <ApiEndpointTag class="shrink-0" :path="`/expansions/${slug}/cards`" />
+          </div>
           <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
             <CardTile v-for="card in group.cards" :key="card.id" :card="card" :expansion-name="expansion.name" />
           </div>

@@ -9,17 +9,18 @@ export default defineCachedEventHandler(async (event): Promise<Record<string, Ca
 
   const entries = await Promise.all(
     candidates.map(async (expansion) => {
-      const [expansionProducts, expansionHitRates] = await Promise.all([
-        tcgpriser.expansions.products(expansion.technicalName),
+      const [expansionCards, expansionSealedProducts, expansionHitRates] = await Promise.all([
+        tcgpriser.expansions.cards(expansion.technicalName),
+        tcgpriser.expansions.sealedProducts(expansion.technicalName),
         tcgpriser.packRates.get(expansion.technicalName).catch(() => undefined),
       ]);
-      const boosterPack = expansionProducts.sealed.items.find(
+      const boosterPack = expansionSealedProducts.data.find(
         (product) => product.category?.technicalName === 'booster-pack'
       );
 
       const group: CardGroup = {
         expansion,
-        cards: expansionProducts.cards.items.map((card) => {
+        cards: expansionCards.data.map((card) => {
           card.expansion = undefined;
           return card;
         }),
