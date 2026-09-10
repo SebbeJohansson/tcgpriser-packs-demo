@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "nuxt": "^4.5.2",
-    "tcgpriser": "^0.5.0",
+    "tcgpriser": "^1.1.0",
     "vue": "^3.5.41",
     "vue-router": "^5.2.0"
   },

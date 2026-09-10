@@ -4386,10 +4386,10 @@ tar@^7.4.0:
     minizlib "^3.1.0"
     yallist "^5.0.0"
 
-tcgpriser@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/tcgpriser/-/tcgpriser-0.5.0.tgz#443d5ef5b61d1d5c64acc42a0ee9d296611356a9"
-  integrity sha512-rFZA1odoHONyp4V0pT7QIfBNUlrSwOH6DQ9/y1FE4i4d5iHP62vWH78wJ7Cf2hdM8uCUW3kZYTfogTHukJ3+og==
+tcgpriser@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/tcgpriser/-/tcgpriser-1.1.0.tgz#aed34416cfad0f95d805b49e3d99728023668fd2"
+  integrity sha512-veYXLMNMwgP3ELJeq8YtcuTkT61yMClu1TTCD1Bb4Y0oSsOAu5xnGGlWXlTftxEEyBKOEznl3WYywVYScr0cKg==
 
 teex@^1.0.1:
   version "1.0.1"
