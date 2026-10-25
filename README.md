@@ -1,4 +1,5 @@
 # PackOdds
+[https://packs.tcgpriser.se/](https://packs.tcgpriser.se/)
 
 [Discord](https://discord.gg/K7WkGRjetM) · [GitHub](https://github.com/SebbeJohansson/tcgpriser-packs-demo)
 
